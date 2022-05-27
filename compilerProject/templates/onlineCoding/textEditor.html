@@ -1,0 +1,110 @@
+{% extends 'onlineCoding/base.html' %}
+
+{% block content %}
+    {% load static %}
+
+    <link rel=stylesheet href="{% static 'codemirror/main/codemirror.css' %}">
+    {#    <link rel=stylesheet href="{% static 'codemirror/doc/docs.css' %}">#}
+    <link rel=stylesheet href="{% static 'codemirror/addon/hint/show-hint.css' %}"/>
+    <link rel=stylesheet href="{% static 'onlineCoding/css/style.css' %}"/>
+    <script src="{% static 'codemirror/main/codemirror.js' %}"></script>
+    <script src="{% static 'codemirror/mode/python/python.js' %}"></script>
+    <script src="{% static 'codemirror/addon/edit/matchbrackets.js' %}"></script>
+    <script src="{% static 'codemirror/addon/hint/show-hint.js' %}"></script>
+    <style>
+        .CodeMirror pre {
+            padding-left: 7px;
+            line-height: 1.25;
+        }
+
+        .banner {
+            background: #ffc;
+            padding: 6px;
+            border-bottom: 2px solid silver;
+            text-align: center
+        }
+    </style>
+    <div class="text-center">
+
+        <h3>{{ task.title }}</h3>
+        <br>
+        <p>Difficulty: {{ task.difficulty }}</p>
+        <p>
+            Execution time limit: {{ task.time_limit }} sec<br>
+            Memory limit: {{ task.memory_limit }} Kbit
+        </p>
+        <small>Added by: {{ task.author }}</small><br>
+        <small>Added at: {{ task.created_at }}</small>
+    </div>
+    <p>{{ task.description }}</p>
+    {% if task.input_description %}
+        <h5>Input:</h5>
+        <p>{{ task.input_description }}</p>
+    {% endif %}
+    <h5>Output:</h5>
+    <p>{{ task.output_description }}</p>
+    <h4>Example:</h4>
+    {% if first_test.input_data %}
+        <div class="input mb-2">
+            <div class="title">Input example</div>
+            <pre>{{ first_test.input_data }}</pre>
+        </div>
+    {% endif %}
+    <div class="output">
+        <div class="title">Output example</div>
+        <pre>{{ first_test.output_data }}</pre>
+    </div>
+    <br>
+    {% if request.user.is_authenticated %}
+        {% if type != 'warning' and type != 'success' %}
+
+            <form style="position: relative; margin-top: .5em;" action="{{ task.slug }}" method="post">
+                {% csrf_token %}
+                {{ form.code }}
+                {% comment %} {% if task.is_solved(request.user) %}
+        <button type="submit" class="btn btn-primary" disabled>
+            <i class="fa fa-check"></i>
+            Solved
+        </button>
+    {% endif %} {% endcomment %}
+
+                <hr>
+                <button class="btn btn-outline-success" type="submit">Send</button>
+            </form>
+        {% endif %}
+        {% if type == 'success' %}
+            <a href="/problems" class="btn btn-outline btn-primary mb-4">Back to problems</a>
+        {% endif %}
+
+        {% if answer or error %}
+
+            <div class="console">
+                <div class="console-top">
+                    <span class="red"></span><span class="orange"></span><span class="green"></span>
+                </div>
+                <pre class="console-bg"><strong class="alert-{{ type }}"><code
+                        class="b7126e7">{{ answer }}{{ error }}</code></strong></pre>
+            </div>
+        {% endif %}
+    {% else %}
+        <i class="text-info"><b>Note:</b> Only authorized users can send solutions</i>
+    {% endif %}
+    <div class="mb-4"></div>
+    <script>
+        const editor = CodeMirror.fromTextArea(document.getElementsByName("code")[0], {
+            mode: {
+                name: "python",
+                version: 3,
+                singleLineStringErrors: false
+            },
+            lineNumbers: true,
+            indentUnit: 4,
+            matchBrackets: true
+        });
+        editor.on('change', function () {
+            document.getElementsByName("code")[0].innerText = editor.getValue();
+        })
+        var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
+        CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
+    </script>
+{% endblock %}

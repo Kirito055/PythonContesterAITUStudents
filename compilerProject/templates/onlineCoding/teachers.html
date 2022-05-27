@@ -1,0 +1,95 @@
+{% extends 'onlineCoding/base.html' %}
+
+{% block title %}
+    Teacher Page
+{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css">
+    {% comment %}
+         all plagiarism_tasks are stored in the database as a list of strings
+    {% endcomment %}
+    <div class="container">
+        <h1>Teacher page</h1>
+        <h2>All tasks</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Teacher</th>
+                        <th>Students</th>
+                        <th>Plagiarism</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for task in plagiarism_tasks %}
+                        <tr>
+                            <td>{{ task.task }}</td>
+                            <td>{{ task.task.teacher.user.first_name }}</td>
+                            <td> {{ task.author.first_name }}</td>
+                            <td> {{ task.plagiat }} </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% comment %}
+        all information about student of teacher users_of_teachers
+    {% endcomment %}
+    <div class="container">
+        <h2>All users of teacher</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Email</th> 
+                        <th>Group</th>
+                        <th>Role</th>
+                        <th>Teacher</th> 
+                        <th>Rating</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for user in users_of_teachers %}
+                        <tr>
+                            <td>{{ user.user.first_name }}</td>
+                            <td>{{ user.user.surname }}</td>
+                            <td>{{ user.user.group }}</td>
+                            <td>{{ user.user.email }}</td> 
+                            <td>{{ user.user.role }}</td>
+                            <td>{{ teacher.user.first_name }}</td> 
+                            <td>{{ user.rating }}</td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+{% endblock %}
+
+{% block after_script %}
+    <script src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#leaderboard').DataTable();
+        });
+    </script>
+{% endblock %}

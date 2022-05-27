@@ -1,0 +1,61 @@
+{% extends 'onlineCoding/base.html' %}
+{% block title %}
+    {{ course.title }}
+{% endblock %}
+
+{% block content %}
+    <div class="card shadow mb-2">
+        <div class="card-body">
+            <h5 class="card-title">{{ course.title }}</h5>
+            <p class="card-text">{{ course.description }}</p>
+        </div>
+    </div>
+
+    {% comment %}
+    print all chapters
+    {% endcomment %}
+    <h4 class="my-3">Chapters:</h4>
+
+    {% for chapter in chapters %}
+        <div class="card shadow mb-2">
+            <div class="card-body">
+                <h6>#{{ chapter.id }} {{ chapter.title }}</h6>
+                <b>Description: </b>
+                <p>{{ chapter.description }}</p>
+                {#                    <li><b>Chapter Created At:</b> {{ chapter.created_at }}</li>#}
+                {#                    <li><b>Chapter Updated At: </b> {{ chapter.updated_at }}</li>#}
+                <b>Info:</b>
+                <p><i>{{ chapter.information }} </i></p>
+
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+    {% comment %} print all information from course {% endcomment %}
+    <div class="card shadow mb-2">
+        <div class="card-body">
+            <h5 class="card-title">Course Information</h5>
+            <p class="card-text">
+            <ul>
+                {#                <li>Course ID: {{ course.id }}</li>#}
+                {#                <li>Course Title: {{ course.title }}</li>#}
+                {#                <li>Course Description: {{ course.description }}</li>#}
+
+                <li>Created At: {{ course.created_at }}</li>
+                <li>Author: {{ course.author }}</li>
+                {#                <li>Updated At: {{ course.updated_at }}</li>#}
+                {% comment %}
+                        create a list and buttons of tasks in course
+                    {% endcomment %}
+
+                <li>Tasks:
+                    {% for task in tasks %}
+                        <a class="btn-sm btn-primary" href="/textEditor/{{ task.slug }}">{{ task.title }}</a>
+                    {% endfor %}
+                </li>
+            </ul>
+            </p>
+        </div>
+    </div>
+    {% comment %} print all information from course {% endcomment %}
+{% endblock %}

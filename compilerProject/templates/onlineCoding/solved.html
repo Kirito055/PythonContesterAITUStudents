@@ -1,0 +1,43 @@
+{% extends 'onlineCoding/base.html' %}
+
+{% block content %}
+
+{% comment %}
+
+    list of all solved tasks solved_tasks
+    
+{% endcomment %}
+
+<div class="container">
+<h2>All your solved tasks</h2>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Title of the task</th>
+                <th>Plagiat</th>
+                <th>Status</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for solved in solved_tasks %}
+                <tr>
+                    <td><a href="textEditor/{{solved.task.slug }}">{{ solved.task.title }}</a></td>
+                    <td>{{ solved.isplagiarized }}</td>
+                    <td>Accepted</td>
+                
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+{% endblock %}

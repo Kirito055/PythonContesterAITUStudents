@@ -1,0 +1,42 @@
+{% extends 'onlineCoding/base.html' %}
+{% block title %}
+    Online Coding
+{% endblock %}
+{% block content %}
+
+
+    <div class="row">
+    {% load static %}
+        {% for course in courses %}
+            <div class="col-xs-12 col-md-6 col-lg-4 mb-4">
+                <div class="card shadow h-100">
+
+                    <img class="card-img-top"
+                         src="{{ course.banner }}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course.title }}</h5>
+                        <p class="card-text">{{ course.description }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'course' course.slug %}" class="btn btn-primary">More</a>
+                    </div>
+                </div>
+            </div>
+            {% comment %} {               <p class="w3-opacity"><i>{{ course.created_at }}</i></p>}
+            {                <p class="w3-opacity"><i>{{ course.updated_at }}</i></p>}
+            {                <p class="w3-opacity"><i>{{ course.user_id }}</i></p>}
+            {                <p class="w3-opacity"><i>{{ course.category_id }}</i></p>}
+            {                <p class="w3-opacity"><i>{{ course.language_id }}</i></p>}
+            {                <p class="w3-opacity"><i>{{ course.level_id }}</i></p>}
+            {                <p class="w3-opacity"><i>{{ course.price }}</i></p>}
+            {                <p class="w3-opacity"><i>{{ course.duration }}</i></p>}
+            {                <p class="w3-opacity"><i>{{ course.rating }}</i></p>}
+            {                <p class="w3-opacity"><i>{{ course.views }}</i></p>}
+            {                <p class="w3-opacity"><i>{{ course.status }}</i></p>}
+            {                <p class="w3-opacity"><i>{{ course.image }}</i></p>}
+            {                <p class="w3-opacity"><i>{{ course.video }}</i></p>}
+            {                <p class="w3-opacity"><i>{{ course.slug }}</i></p>} {% endcomment %}
+        {% endfor %}
+    </div>
+    </div>
+{% endblock %}

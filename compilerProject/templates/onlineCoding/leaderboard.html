@@ -1,0 +1,71 @@
+{% extends 'onlineCoding/base.html' %}
+
+{% block content %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'onlineCoding/css/style.css' %}">
+    <div class="my-3 p-3 rounded shadow text-white">
+        <table class="table table-hover" id="leaderboard">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">Group</th>
+                <th scope="col">Rating</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr {% if user.user.email == request.user.email %}
+                    class="bg-light font-weight-bold"
+                {% endif %}>
+                    <th scope="row">
+                        {{ forloop.counter }}
+                    </th>
+                    <td>{{ user.user.first_name }}{% if user.user.email == request.user.email %}
+                    (you)
+                {% endif %}</td>
+                    <td>{{ user.user.surname }}</td>
+                    <td>{{ user.user.group }}</td>
+                    <td>{{ user.rating }}</td>
+                </tr>
+            {% endfor %}
+
+
+        </table>
+        {% if request.user.is_authenticated %}
+        <table class="table">
+            <tr>
+                <th scope="row">
+                    ...
+                </th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="bg-light">
+                <th scope="row">
+                    {{ place }}
+                </th>
+                <td>{{ request.user.first_name }}</td>
+                <td>{{ request.user.surname }}</td>
+                <td>{{ request.user.group }}</td>
+                <td>{{ request.user.rating }}</td>
+            </tr>
+        </table>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block after_script %}
+    <script src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#leaderboard').DataTable();
+        });
+    </script>
+{% endblock %}
